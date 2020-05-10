@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:right_spot/api/app_exception.dart';
 
 class BaseApiHelper {
-  final String _baseUrl = "localhost:8888";
+  final String _baseUrl = "http://localhost:8888";
 
   Future<dynamic> get({ String target, Map<String, String> header, Map<String, String> params }) async {
     var responseJson;
@@ -16,6 +16,19 @@ class BaseApiHelper {
       responseJson = this._returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    }
+
+    return responseJson;
+  }
+
+  Future<dynamic> post({ @required String target, @required Map<String, String> header, Map<String, String> params, @required dynamic body }) async {
+    var responseJson;
+    try {
+      final Uri request = Uri.http(_baseUrl, target, header);
+      final response = await http.post(request, headers: header, body: body);
+      responseJson = this._returnResponse(response);
+    } on SocketException {
+      throw PostDataExeption('No internet connection');
     }
 
     return responseJson;
