@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:right_spot/api/base_api_helper.dart';
+import 'package:right_spot/model/geoloc.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,6 +55,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
+    BaseApiHelper().get(target: "/geoloc/12", header: BaseApiHelper.headers(token: "37QQUx91hMcV54PNV96vinC0efWr1UfM"), params: BaseApiHelper.params(includeSpot: true)).then((dynamic data) {
+      print(data);
+      final geoloc = Geoloc.fromJson(data);
+      print(geoloc);
+    });
+
+
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
