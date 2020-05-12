@@ -5,23 +5,28 @@ class Token implements BaseModel {
   String accessToken;
   final String tokenType;
   int expiresIn;
+  final String refreshToken;
 
-  Token({ @required this.accessToken, @required this.tokenType, @required this.expiresIn });
+  Token({ @required this.accessToken, @required this.tokenType, @required this.expiresIn, @required this.refreshToken });
 
   factory Token.fromJson(Map<String, dynamic> json) {
-    if (null != json["access_token"]) {
+    if (null == json["access_token"]) {
       throw ConvertExeption('Token');
     }
     return Token(
       accessToken: json["access_token"] as String, 
       tokenType: json["token_type"] as String,
-      expiresIn: json["expire_in"] as int
+      expiresIn: json["expires_in"] as int,
+      refreshToken: json["refresh_token"] as String
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "data": "token"
+      "access_token": this.accessToken,
+      "token_type": this.tokenType,
+      "expires_in": this.expiresIn,
+      "refresh_token": this.refreshToken
     };
   }
 

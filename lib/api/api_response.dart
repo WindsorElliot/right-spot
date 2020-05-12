@@ -1,6 +1,6 @@
-class ApiResponse<T> {
+class ApiResponse<M> {
   Status status;
-  T data;
+  M data;
   String message;
 
   ApiResponse.loading(this.message) : status = Status.LOADING;

@@ -7,13 +7,17 @@ class LoginRepository {
   final BaseApiHelper _baseApiHelper = BaseApiHelper();
   
   String _generateBaseToken() {
-    const clientID = "com.rightspot.postman";
-    final String clientCredentials = const Base64Encoder().convert("$clientID:".codeUnits);
+    const clientID = "com.rightspot.iosapp";
+    final String clientCredentials = const Base64Encoder().convert("$clientID:c2VjcmV0Zm9ycmlnaHRzcG90".codeUnits);
     return clientCredentials;
   }
 
-  String _generateBody(username, password) {
-    return "username=$username&password=$password&grant_type=password";
+  Map<String, dynamic> _generateBody(username, password) {
+    return {
+      "username": "elliot",
+      "password": "password",
+      "grant_type": "password"
+    };
   }
 
   Map<String, String> _getHeader() {
