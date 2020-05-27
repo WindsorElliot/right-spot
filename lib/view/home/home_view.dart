@@ -4,7 +4,7 @@ import 'package:right_spot/controller/bloc/app_bloc.dart';
 import 'package:right_spot/controller/state/app_state.dart';
 import 'package:right_spot/model/token.dart';
 import 'package:right_spot/view/login_view.dart';
-import 'package:right_spot/view/menu/menu_view.dart';
+import 'package:right_spot/view/main_view.dart';
 import 'package:right_spot/view/splashscreen/splashscreen_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -44,7 +44,7 @@ class _HomeViewState extends State<HomeView> {
               return LoginView();
               break;
             case AppStatus.APP_LOGED:
-              return MenuView();
+              return MainView();
               break;
             case AppStatus.APP_ERROR:
               print(state.message);

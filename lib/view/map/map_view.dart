@@ -6,9 +6,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:right_spot/controller/bloc/spots_bloc.dart';
 import 'package:right_spot/controller/state/api_response.dart';
 import 'package:right_spot/model/spot.dart';
+import 'package:right_spot/view/kfdrawer/kfdrawer.dart';
 import 'package:right_spot/view/spot/spot_view.dart';
 
-class MapView extends StatefulWidget {
+class MapView extends KFDrawerContent {
 
   @override
   _MapViewState createState() => _MapViewState();
@@ -80,7 +81,7 @@ class _MapViewState extends State<MapView> {
                 fillColor: Colors.white,
                 labelText: "Rechercher",
                 hintText: "Rechercher",
-                prefixIcon: IconButton(icon: Icon(Icons.menu), onPressed: () { print('tap tap'); }),
+                prefixIcon: IconButton(icon: Icon(Icons.menu), onPressed: widget.onMenuPressed),
                 suffixIcon: (this._searchText.isNotEmpty)
                   ? IconButton(icon: Icon(Icons.clear), onPressed: () { 
                     this._searchTextController.clear();
