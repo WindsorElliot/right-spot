@@ -6,6 +6,7 @@ class ApiResponse<M> {
   ApiResponse.loading(this.message) : status = Status.LOADING;
   ApiResponse.completed(this.data): status = Status.COMPLETED;
   ApiResponse.error(this.message): status = Status.ERROR;
+  ApiResponse.none(this.data) : status = Status.NONE;
 
   @override
   String toString() {
@@ -17,5 +18,6 @@ class ApiResponse<M> {
 enum Status {
   LOADING,
   COMPLETED,
-  ERROR
+  ERROR,
+  NONE
 }

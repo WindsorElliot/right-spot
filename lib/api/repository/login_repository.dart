@@ -14,9 +14,16 @@ class LoginRepository {
 
   Map<String, dynamic> _generateBody(username, password) {
     return {
-      "username": "elliot",
-      "password": "password",
+      "username": username,
+      "password": password,
       "grant_type": "password"
+    };
+  }
+
+  Map<String, dynamic> _generateRefreshBody(String refreshToken) {
+    return {
+      "grant_type": "refresh_token",
+      "refresh_token": refreshToken
     };
   }
 
@@ -31,5 +38,11 @@ class LoginRepository {
     final response = await this._baseApiHelper.post(target: '/auth/token', header: this._getHeader(), body: this._generateBody(username, password));
     return Token.fromJson(response);
   }
+
+  Future<Token> getAuthTokenWithRefresh(String refreshToken) async {
+    final response = await this._baseApiHelper.post(target: '/auth/token', header: this._getHeader(), body: this._generateRefreshBody(refreshToken));
+    return Token.fromJson(response);
+  }
+
 
 }

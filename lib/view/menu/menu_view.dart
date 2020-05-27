@@ -1,11 +1,8 @@
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:right_spot/controller/app_controller.dart';
+import 'package:right_spot/view/map/map_view.dart';
 
 class MenuView extends StatefulWidget {
-  final AppController appController;
-
-  MenuView({ @required this.appController });
 
   @override
   _MenuViewState createState() => _MenuViewState();
@@ -20,7 +17,7 @@ class _MenuViewState extends State<MenuView> {
   void initState() {
     _selctedView = 0;
     _views = [
-      Container(),
+      MapView(),
       Container(),
       Container()
     ];
@@ -30,6 +27,7 @@ class _MenuViewState extends State<MenuView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: this._views.elementAt(this._selctedView),
       bottomNavigationBar: FancyBottomNavigation(
         tabs: [

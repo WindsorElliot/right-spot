@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:right_spot/api/app_exception.dart';
 
 class BaseApiHelper {
-  final String _baseUrl = "localhost:8888";
+  final String _baseUrl = "rightspotapi.herokuapp.com";
 
   Future<dynamic> get({ String target, Map<String, String> header, Map<String, String> params }) async {
     var responseJson;
@@ -24,7 +24,7 @@ class BaseApiHelper {
   Future<dynamic> post({ @required String target, @required Map<String, String> header, Map<String, String> params, @required dynamic body }) async {
     var responseJson;
     try {
-      final Uri request = Uri.http(_baseUrl, target);
+      final Uri request = Uri.https(_baseUrl, target);
       final response = await http.post(request, headers: header, body: body, encoding: Encoding.getByName("utf-8"));
       responseJson = this._returnResponse(response);
     } catch (e) {
