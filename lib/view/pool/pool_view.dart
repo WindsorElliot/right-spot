@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:right_spot/view/kfdrawer/kfdrawer.dart';
+import 'package:kf_drawer/kf_drawer.dart';
 
 class PoolView extends KFDrawerContent {
 

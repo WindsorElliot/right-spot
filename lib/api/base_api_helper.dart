@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:right_spot/api/app_exception.dart';
 
 class BaseApiHelper {
-  final String _baseUrl = "rightspotapi.herokuapp.com";
+  final String _baseUrl = "api.rightspot.fr";
 
   Future<dynamic> get({ String target, Map<String, String> header, Map<String, String> params }) async {
     var responseJson;

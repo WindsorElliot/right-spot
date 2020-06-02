@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:right_spot/controller/bloc/spots_bloc.dart';
 import 'package:right_spot/controller/state/api_response.dart';
 import 'package:right_spot/model/spot.dart';
-import 'package:right_spot/view/kfdrawer/kfdrawer.dart';
+import 'package:kf_drawer/kf_drawer.dart';
 import 'package:right_spot/view/spot/spot_view.dart';
 
 class MapView extends KFDrawerContent {

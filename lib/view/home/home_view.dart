@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:right_spot/controller/bloc/app_bloc.dart';
 import 'package:right_spot/controller/state/app_state.dart';
-import 'package:right_spot/model/token.dart';
+import 'package:right_spot/model/user.dart';
 import 'package:right_spot/view/login_view.dart';
 import 'package:right_spot/view/main_view.dart';
 import 'package:right_spot/view/splashscreen/splashscreen_view.dart';
@@ -35,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
       create: (context) => this._appBloc,
       child: BlocBuilder(
         bloc: this._appBloc,
-        builder: (BuildContext context, AppState<Token> state) {
+        builder: (BuildContext context, AppState<User> state) {
           switch(state.status) {
             case AppStatus.APP_LOADING:
               return SplashScreenView();

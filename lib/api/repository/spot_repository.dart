@@ -21,7 +21,7 @@ class SpotRepository implements BaseRepository {
     return Spot.fromJson(response);
   }
 
-  Future<Spot> update(int id) async {
+  Future<Spot> update(int id, data) async {
     return Future.error("not implmented");
   }
 

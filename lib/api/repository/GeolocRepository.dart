@@ -20,11 +20,11 @@ class GeolocRepository implements BaseRepository {
     return Geoloc.fromJson(response);
   }
 
-  Future<Geoloc> update(int id) async {
-
+  Future<Geoloc> update(int id, data) async {
+    throw UnimplementedError();
   }
 
   Future<int> delete(int id) async {
-    
+    throw UnimplementedError();
   }
 }

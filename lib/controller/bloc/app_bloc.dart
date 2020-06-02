@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:right_spot/api/repository/login_repository.dart';
+import 'package:right_spot/api/repository/user_repository.dart';
 import 'package:right_spot/controller/event/app_event.dart';
 import 'package:right_spot/controller/state/app_state.dart';
 import 'package:right_spot/model/token.dart';
+import 'package:right_spot/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AppBloc extends Bloc<AppEvent, AppState<Token>> {
+class AppBloc extends Bloc<AppEvent, AppState<User>> {
 
   final LoginRepository _loginRepository = LoginRepository();
 
@@ -16,10 +19,10 @@ class AppBloc extends Bloc<AppEvent, AppState<Token>> {
   }
 
   @override
-  AppState<Token> get initialState => AppState.loading("connection ...");
+  AppState<User> get initialState => AppState.loading("connection ...");
 
   @override
-  Stream<AppState<Token>> mapEventToState(AppEvent event) async* {
+  Stream<AppState<User>> mapEventToState(AppEvent event) async* {
     if (event is AppLoading) {
       yield* _appLoadingToState(event);
     }
@@ -37,27 +40,25 @@ class AppBloc extends Bloc<AppEvent, AppState<Token>> {
     }
   }
 
-  Stream<AppState<Token>> _appLoadingToState(AppLoading event) async* {
+  Stream<AppState<User>> _appLoadingToState(AppLoading event) async* {
     yield AppState.loading("checkin user ...");
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final jsonString = prefs.getString("app_token_string");
+      final jsonString = prefs.getString("app_user_string");
       if (null == jsonString) {
         yield AppState.notLogged();
       }
       else {
-        final jsonToken = json.decode(jsonString);
-        final token = Token.fromJson(jsonToken);
+        final jsonUser = json.decode(jsonString);
+        final user = User.fromJson(jsonUser);
         final currentTimestamp = DateTime.now().millisecondsSinceEpoch;
-        if (currentTimestamp + (token.expiresIn * 1000) >= (token.createdTimestamp + (token.expiresIn * 1000))) {
-          final newToken = await this._loginRepository.getAuthTokenWithRefresh(token.refreshToken);
-          await this._saveToken(newToken);
-          yield AppState.logged(newToken);
+        if (currentTimestamp + (user.token.expiresIn * 1000) >= (user.token.createdTimestamp + (user.token.expiresIn * 1000))) {
+          user.token = await this._loginRepository.getAuthTokenWithRefresh(user.token.refreshToken);
+          await this._saveToken(user.token);
+          await this._saveUser(user);
         }
-        else {
-          yield AppState.logged(token);
-        }
+        yield AppState.logged(user);
       }
     }
     catch (error) {
@@ -65,17 +66,20 @@ class AppBloc extends Bloc<AppEvent, AppState<Token>> {
     }
   }
 
-  Stream<AppState<Token>> _appLoggedToState(AppLogged event) async* {
+  Stream<AppState<User>> _appLoggedToState(AppLogged event) async* {
     try {
       await this._saveToken(event.token);
-      yield AppState.logged(event.token);
+      final user = await UserRepository(bearerToken: event.token.accessToken).getCurrentUser();
+      user.token = event.token;  
+      await this._saveUser(user);
+      yield AppState.logged(user);
     }
     catch (error) {
       yield AppState.error(error.toString());
     }
   }
 
-  Stream<AppState<Token>> _appLogoutToState(AppLogout event) async * {
+  Stream<AppState<User>> _appLogoutToState(AppLogout event) async * {
     try {
       if (this.state is AppLogged) {
         final prefs = await SharedPreferences.getInstance();
@@ -88,8 +92,18 @@ class AppBloc extends Bloc<AppEvent, AppState<Token>> {
     }
   }
 
-  Stream<AppState<Token>> _appErrorToState(AppError event) async* {
+  Stream<AppState<User>> _appErrorToState(AppError event) async* {
     yield AppState.error(event.message);
+  }
+
+  Future<void> _saveUser(User user) async {
+    final jsonString = json.encode(user.toJsonWithToken());
+    final prefs = await SharedPreferences.getInstance();
+    bool success = await prefs.setString("app_user_string", jsonString);
+    if (false == success) {
+      throw ErrorDescription("unable to save User Localy");
+    }
+    return;
   }
 
   Future<void> _saveToken(Token token) async {
@@ -97,7 +111,7 @@ class AppBloc extends Bloc<AppEvent, AppState<Token>> {
     final prefs = await SharedPreferences.getInstance();
     bool success = await prefs.setString("app_token_string", jsonString);
     if (false == success) {
-      throw UnimplementedError();
+      throw ErrorDescription("unable to save Token Localy");
     }
     return;
   }
