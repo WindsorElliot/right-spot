@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Right Spot',
       theme: ThemeData(
+        primaryColor: Colors.blueAccent,
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme:GoogleFonts.latoTextTheme(textTheme).copyWith(

@@ -56,8 +56,8 @@ class _MainViewState extends State<MainView> {
 
   @override
   void dispose() {
-    this._userBloc.close();
-    this._kfDrawerController.close();
+    _userBloc.close();
+    _kfDrawerController.close();
     super.dispose();
   }
 
