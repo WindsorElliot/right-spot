@@ -43,5 +43,9 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pour que vous puissiez selectionner votre photo de profil</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Pour que vous puissiez prendre votre photo de profil</string>
 </dict>
 </plist>
